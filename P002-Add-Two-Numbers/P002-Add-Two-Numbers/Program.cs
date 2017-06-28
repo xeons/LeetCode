@@ -23,7 +23,12 @@ namespace P002_Add_Two_Numbers
             input2.next = new ListNode(6);
             input2.next.next = new ListNode(4);
 
-            var answer = solution.AddTwoNumbers(input1, input2);
+            var answer = solution.AddTwoNumbersV1(input1, input2);
+            for (ListNode x1 = answer; x1 != null; x1 = x1?.next)
+                Console.Write(x1.val + " ");
+            Console.Write("\n");
+
+            answer = solution.AddTwoNumbersV2(input1, input2);
             for (ListNode x1 = answer; x1 != null; x1 = x1?.next)
                 Console.Write(x1.val + " ");
             Console.Write("\n");
