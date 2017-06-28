@@ -40,6 +40,7 @@ namespace P002_Add_Two_Numbers
 
             return head;
         }
+
         /**
          * 1562 / 1562 test cases passed.
          * Status: Accepted
