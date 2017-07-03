@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace P008_String_to_Integer
@@ -12,69 +11,46 @@ namespace P008_String_to_Integer
         /*
          * 1047 / 1047 test cases passed.
          * Status: Accepted
-         * Runtime: 205 ms
-         * Your runtime beats 0.57 % of csharp submissions. :-(
-         * This is an abomination...
+         * Runtime: 166 ms
          */
         public int MyAtoi(string str)
         {
-            if (string.IsNullOrWhiteSpace(str))
+            string input = str.Trim();
+
+            if (input.Length == 0)
                 return 0;
 
-            Match match = Regex.Match(str.Trim(), @"^([\d+-]+)\D?");
-            if (!match.Success)
-                return 0;
-            string input = match.Groups[0].Value;
-            int position = 0, output = 0;
-            bool negative = false;
+            int sign = 1;
+            int output = 0;
+            int start = 0;
 
-            if (input[0] == '+')
+            // sanity checks
+            if (input[0] == '+' || input[0] == '-')
             {
-                if (input.Length >= 2 && (input[1] < '0' || input[1] > '9'))
+                if (input.Length < 2 || (input[1] < '0' || input[1] > '9'))
                     return 0;
-            }
-            else if (input[0] == '-')
-            {
-                if (input.Length >= 2 && (input[1] < '0' || input[1] > '9'))
-                    return 0;
-                negative = true;
+
+                sign = input[0] == '-' ? -1 : 1;
+                start = 1;
             }
             else if (!(input[0] >= '0' && input[0] <= '9'))
             {
                 return 0;
             }
 
-            for (int i = input.Length - 1; i >= 0; i--)
+            for(int i = start; i < input.Length; i++)
             {
-                if (input[i] >= '0' && input[i] <= '9')
-                {
-                    try
-                    {
-                        checked
-                        {
-                            if (!negative)
-                                output += (int)Math.Pow(10, position++) * (input[i] - '0');
-                            else
-                                output -= (int)Math.Pow(10, position++) * (input[i] - '0');
-                        }
-                    }
-                    catch (OverflowException)
-                    {
-                        output = (negative ? int.MinValue : int.MaxValue);
-                        break;
-                    }
-                }
-                else
-                {
-                    if ((output > 0 || output < 0) && input[i] != '-' && input[i] != '+')
-                    {
-                        position = 0;
-                        output = 0; //reset output??
-                    }
-                }
+                int digit = input[i] - '0';
+                if (digit < 0 || digit > 9)
+                    break;
+
+                if (int.MaxValue / 10 < output || int.MaxValue / 10 == output && int.MaxValue % 10 < digit)
+                    return sign == 1 ? int.MaxValue : int.MinValue;
+
+                output = 10 * output + digit;
             }
 
-            return output;
+            return output * sign;
         }
     }
 }

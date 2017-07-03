@@ -15,6 +15,7 @@ namespace P008_String_to_Integer
             Console.WriteLine(solution.MyAtoi("-1024"));
             Console.WriteLine(solution.MyAtoi(uint.MaxValue.ToString()));
             Console.WriteLine(solution.MyAtoi("-" + uint.MaxValue.ToString()));
+            Console.WriteLine(solution.MyAtoi("+1"));
             Console.ReadLine();
         }
     }
